@@ -80,34 +80,35 @@
               <q-item-section>
                 <q-linear-progress rounded size="15px" :value="progress" color="white" />
               </q-item-section>
-              <q-item-section avatar class="text-weight-bolder text-white">
-                {{todosOthers.filter(item => {return item.done === true}).length}} / {{todosOthers.filter(item => {return item}).length}}
-              </q-item-section>
               <!-- <q-item-section avatar class="text-weight-bolder text-white">
-                {{calculate}} / {{calculate2}}
+                {{todosOthers.filter(item => {return item.done === true}).length}} / {{todosOthers.filter(item => {return item}).length}}
               </q-item-section> -->
+              <q-item-section avatar class="text-weight-bolder text-white">
+                {{calculate}} / {{calculate2}}
+              </q-item-section>
             </q-item>
           </q-card>
   </div>
 </template>
 
 <script>
-import {ref} from 'vue'
+import {reactive, computed} from 'vue'
 import { useQuasar } from 'quasar'
 export default {
   name:"Progress",
   setup() {
     const $q = useQuasar()
-    const todosOthers = ref([{
+    const todosOthers = reactive([{
       activity:"Your Focus Today",
       time:"08:00",
       done: false
     }])
 
     function addTodo(){
-      todosOthers.value.push({
+      todosOthers.push({
         activity:"Other Task",
-        time:"08:00"
+        time:"08:00",
+        done: false
       })
     }
 
@@ -162,11 +163,17 @@ export default {
 
     }
 
-    const calculate = () => todosOthers.filter(item => item.value.done === false).length
-    const calculate2 = () => todosOthers.filter(item => {return item}).length
+    // Reactive
+    const calculate = computed(() => todosOthers.filter(item => item.done === true).length)
+    const calculate2 = computed(() => todosOthers.filter(item => {return item}).length)
 
+    // REF
+    // const calculate = computed(() => todosOthers.value.filter(item => item.done === true).length)
+    // const calculate2 = computed(() => todosOthers.value.filter(item => {return item}).length)
 
+    const progress = () => calculate % calculate2;
 
+    console.log(progress());
 
     return {
       todosOthers,
@@ -176,7 +183,7 @@ export default {
       removeTodo,
       calculate,
       calculate2,
-      progress: 0.5
+      progress
     }
 
 
