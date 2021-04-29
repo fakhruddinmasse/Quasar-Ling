@@ -78,11 +78,8 @@
                 Progress
               </q-item-section>
               <q-item-section>
-                <q-linear-progress rounded size="15px" :value="progress" color="white" />
+                <q-linear-progress rounded size="15px" :value="calculate / calculate2" color="white" />
               </q-item-section>
-              <!-- <q-item-section avatar class="text-weight-bolder text-white">
-                {{todosOthers.filter(item => {return item.done === true}).length}} / {{todosOthers.filter(item => {return item}).length}}
-              </q-item-section> -->
               <q-item-section avatar class="text-weight-bolder text-white">
                 {{calculate}} / {{calculate2}}
               </q-item-section>
@@ -158,7 +155,7 @@ export default {
         },
         persistent: true
       }).onOk(() => {
-        todosOthers.value.splice(i,1)
+        todosOthers.splice(i,1)
       })
 
     }
@@ -171,9 +168,7 @@ export default {
     // const calculate = computed(() => todosOthers.value.filter(item => item.done === true).length)
     // const calculate2 = computed(() => todosOthers.value.filter(item => {return item}).length)
 
-    const progress = () => calculate % calculate2;
 
-    console.log(progress());
 
     return {
       todosOthers,
@@ -183,7 +178,6 @@ export default {
       removeTodo,
       calculate,
       calculate2,
-      progress
     }
 
 
